@@ -123,6 +123,7 @@ public Pais(){} //Si me olvido de este no me crea la entidad
         this.callingCodes = callingCodes;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -131,12 +132,10 @@ public Pais(){} //Si me olvido de este no me crea la entidad
         return getPoblacion() == pais.getPoblacion() &&
                 Double.compare(pais.getLatitud(), getLatitud()) == 0 &&
                 Double.compare(pais.getLongitud(), getLongitud()) == 0 &&
-                Arrays.equals(getCallingCodes(), pais.getCallingCodes()) &&
                 Objects.equals(getCodigoPais(), pais.getCodigoPais()) &&
                 Objects.equals(getNombrePais(), pais.getNombrePais()) &&
                 Objects.equals(getCapitalPais(), pais.getCapitalPais()) &&
-                Objects.equals(getRegion(), pais.getRegion()) &&
-                Arrays.equals(getLatlng(), pais.getLatlng());
+                Objects.equals(getRegion(), pais.getRegion());
     }
 
     @Override
