@@ -1,31 +1,54 @@
 package main.entities;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Objects;
 
 
 @Entity
-public class Pais {
-    @Id
+@JsonIgnoreProperties(ignoreUnknown = true)  //Ignora las demás propiedades del json de la apiweb
+public class Pais extends Base implements Serializable {
 
-
+    @JsonProperty("callingCodes") //Asi se llama en realidad la propiedad del json, hay que respetar su nombre
+    @Transient
+    private int[] callingCodes;
     private Integer codigoPais;
 
-
+    @JsonProperty("name")
     private String nombrePais;
 
-
+    @JsonProperty("capital")
     private String capitalPais;
 
     private String region;
 
+    @JsonProperty("population")
     private int poblacion;
 
+    @JsonProperty("latlng")
+    @Transient
+    private double[] latlng;
     private double latitud;
     private double longitud;
+public Pais(){} //Si me olvido de este no me crea la entidad
 
+    public Pais(Pais copia) {
+        this.id=copia.id;
+        this.callingCodes=copia.callingCodes;
+        this.latlng=copia.latlng;
+        this.codigoPais = copia.codigoPais;
+        this.nombrePais = copia.nombrePais;
+        this.capitalPais = copia.capitalPais;
+        this.region = copia.region;
+        this.poblacion = copia.poblacion;
+        this.latitud = copia.latitud;
+        this.longitud = copia.longitud;
+    }
 
     public int getCodigoPais() {
         return codigoPais;
@@ -84,16 +107,60 @@ public class Pais {
         this.longitud = longitud;
     }
 
+    public double[] getLatlng() {
+        return latlng;
+    }
+
+    public void setLatlng(double[] latlng) {
+        this.latlng = latlng;
+    }
+
+    public int[] getCallingCodes() {
+        return callingCodes;
+    }
+
+    public void setCallingCodes(int[] callingCodes) {
+        this.callingCodes = callingCodes;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Pais)) return false;
+        Pais pais = (Pais) o;
+        return getPoblacion() == pais.getPoblacion() &&
+                Double.compare(pais.getLatitud(), getLatitud()) == 0 &&
+                Double.compare(pais.getLongitud(), getLongitud()) == 0 &&
+                Arrays.equals(getCallingCodes(), pais.getCallingCodes()) &&
+                Objects.equals(getCodigoPais(), pais.getCodigoPais()) &&
+                Objects.equals(getNombrePais(), pais.getNombrePais()) &&
+                Objects.equals(getCapitalPais(), pais.getCapitalPais()) &&
+                Objects.equals(getRegion(), pais.getRegion()) &&
+                Arrays.equals(getLatlng(), pais.getLatlng());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(getCodigoPais(), getNombrePais(), getCapitalPais(), getRegion(), getPoblacion(), getLatitud(), getLongitud());
+        result = 31 * result + Arrays.hashCode(getCallingCodes());
+        result = 31 * result + Arrays.hashCode(getLatlng());
+        return result;
+    }
+
     @Override
     public String toString() {
         return "Pais{" +
-                "codigoPais=" + codigoPais +
+                "callingCodes=" + Arrays.toString(callingCodes) +
+                ", codigoPais=" + codigoPais +
                 ", nombrePais='" + nombrePais + '\'' +
                 ", capitalPais='" + capitalPais + '\'' +
                 ", region='" + region + '\'' +
                 ", poblacion=" + poblacion +
+                ", latlng=" + Arrays.toString(latlng) +
                 ", latitud=" + latitud +
                 ", longitud=" + longitud +
+                ", id=" + id +
+                ", date=" + date +
                 '}';
     }
 }
