@@ -25,7 +25,7 @@ public class PaisController extends ControllerGenerico<Pais, PaisService> {
 
 //Nota: Sacandole la anotación @Bean al método consumeApi del servicio Pais puedo enviar la request con postman o el navegador.
 //Esperar a que inserte todos para ver los registros.
-    @PutMapping("/consumeCountries")
+    @PostMapping("/consumeCountries")
      @Transactional
     public ResponseEntity<?> getAll() {
 
